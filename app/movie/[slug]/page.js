@@ -2,23 +2,27 @@
 import React, { useEffect, useState } from 'react';
 import { getMovieDetails } from '@/app/actions';
 import Image from 'next/image';
-import StarIcon from '@/public/images/icons/staricon';
+import StarIcon from '@/public/icons/staricon';
 import Skeleton from './skeletonForID';
+import NoResultsIcon from '@/public/icons/NoResultsIcon';
 
 const MovieDetails = ({ params }) => {
     const [movie, setMovie] = useState();
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     useEffect(() => {
         async function fetchMovieDetails() {
             const response = await getMovieDetails(params.slug);
             setLoading(false);
             setMovie(response);
+            console.log('response', response);
+            setError(response.error);
         }
         fetchMovieDetails();
     }, [params.slug]);
 
     const renderGenreTags = (genres) => {
-        return genres.split(', ').map((genre, index) => (
+        return genres?.split(', ').map((genre, index) => (
             <span key={index} className="px-3 py-1 mr-2 text-sm bg-gray-800 rounded-full">
                 {genre}
             </span>
@@ -29,6 +33,19 @@ const MovieDetails = ({ params }) => {
         <div className="bg-zinc-900 text-white min-h-screen">
             {loading ? (
                 <Skeleton />
+            ) : error ? (
+                <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                    <NoResultsIcon />
+                    <h2 className="text-xl font-semibold mb-2">No Results Found</h2>
+                    <p className="text-gray-400">We couldn&apos;t find any movies matching your search.</p>
+                    <button
+                        onClick={() => window.history.back()}
+                        className="mt-6 bg-primary hover:bg-yellow-500 text-white py-2 px-4 rounded"
+                    >
+                        Back to Previous Page
+                    </button>
+                    <p className="text-gray-400 mt-5">Possible reason: {error}</p>
+                </div>
             ) : (
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex justify-between items-start m-4">
@@ -58,12 +75,16 @@ const MovieDetails = ({ params }) => {
                     <div className="relative mb-4 h-[450px] overflow-hidden rounded">
                         <div
                             className="absolute inset-0 bg-cover bg-center filter blur-md scale-110"
-                            style={{ backgroundImage: `url(${movie.Poster})` }}
+                            style={{
+                                backgroundImage: `url(${
+                                    movie.Poster !== 'N/A' ? movie.Poster : '/images/no-img.jpeg'
+                                })`,
+                            }}
                         ></div>
                         <div className="absolute inset-0 bg-black opacity-50"></div>
                         <div className="relative h-full flex justify-center items-center">
                             <Image
-                                src={movie.Poster}
+                                src={movie.Poster !== 'N/A' ? movie.Poster : '/images/no-img.jpeg'}
                                 alt="movie poster"
                                 width={300}
                                 height={450}
@@ -71,14 +92,8 @@ const MovieDetails = ({ params }) => {
                             />
                         </div>
                     </div>
-
-                    {/* Genre tags */}
                     <div className="mb-4">{renderGenreTags(movie.Genre)}</div>
-
-                    {/* Plot */}
                     <p className="text-gray-300 mb-4">{movie.Plot}</p>
-
-                    {/* Director, Writer, Stars */}
                     <div className="mb-4">
                         <p className="mb-2">
                             <span className="text-gray-400 mr-2">Director</span>

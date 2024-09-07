@@ -3,15 +3,18 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { getMovies } from '@/app/actions';
+import NoResultsIcon from '@/public/icons/NoResultsIcon';
 
 const Allmovies = ({ params }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
         async function fetchMovies() {
             const response = await getMovies(params.slugs);
+            setError(response.error);
             setMovies(response.Search || []);
             setLoading(false);
         }
@@ -30,12 +33,12 @@ const Allmovies = ({ params }) => {
                             <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
                             <div className="h-8 bg-gray-300 rounded w-1/2"></div>
                         </div>
-                    ) : (
+                    ) : movies.length > 0 ? (
                         movies.map((movie) => (
                             <div key={movie.imdbID} className="bg-zinc-800 rounded-lg overflow-hidden shadow-lg">
                                 <div className="w-full h-[400px] relative">
                                     <Image
-                                        src={movie.Poster !== 'N/A' ? movie.Poster : '/images/no-image.jpeg'}
+                                        src={movie.Poster !== 'N/A' ? movie.Poster : '/images/no-img.jpeg'}
                                         alt={movie.Title}
                                         fill
                                         style={{ objectFit: 'cover' }}
@@ -53,6 +56,19 @@ const Allmovies = ({ params }) => {
                                 </div>
                             </div>
                         ))
+                    ) : (
+                        <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                            <NoResultsIcon />
+                            <h2 className="text-xl font-semibold mb-2">No Results Found</h2>
+                            <p className="text-gray-400">We couldn&apos;t find any movies matching your search.</p>
+                            <button
+                                onClick={() => router.push('/')}
+                                className="mt-6 bg-primary hover:bg-yellow-500 text-white py-2 px-4 rounded"
+                            >
+                                Back to Home
+                            </button>
+                            <p className="text-gray-400 mt-5">Possible reason: {error}</p>
+                        </div>
                     )}
                 </div>
             </div>
