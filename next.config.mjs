@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {images: {
+    domains: ['ideogram.ai','m.media-amazon.com'],
+  },};
 
 export default nextConfig;
