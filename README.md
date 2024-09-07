@@ -88,3 +88,11 @@ Moviewallah’s design closely resembles the IMDb website, offering users a fami
 Server Actions in Next.js are used to manage API calls, boosting performance by offloading these tasks to the server. This approach enhances both security and client-side efficiency.
 
 ### Slug-Based Routing
+
+## Live Demo
+
+The Moviewallah application is live and accessible online. You can try out the app without any installation by visiting the following link:
+
+[https://moviewallah.netlify.app/](https://moviewallah.netlify.app/)
+
+The website is hosted on Netlify, providing a fast and reliable experience for users worldwide.
