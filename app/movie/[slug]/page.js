@@ -32,7 +32,7 @@ const MovieDetails = ({ params }) => {
 
     return (
         <div className="bg-zinc-900 text-white min-h-screen">
-          <Back/>
+            <Back />
             {loading ? (
                 <Skeleton />
             ) : error ? (
@@ -56,7 +56,7 @@ const MovieDetails = ({ params }) => {
                     <div className="flex justify-between items-start m-4">
                         <div>
                             <h1 className="text-5xl font-bold">{movie.Title}</h1>
-                            <div className="text-sm text-gray-400">
+                            <div className="text-sm mt-2 text-gray-400">
                                 <span>{movie.Year}</span>
                                 <span className="mx-2">•</span>
                                 <span>{movie.Rated}</span>
@@ -112,6 +112,62 @@ const MovieDetails = ({ params }) => {
                             <span className="text-gray-400 mr-2">Stars</span>
                             <span className="text-blue-400">{movie.Actors}</span>
                         </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div className="mb-4">
+                            <p className="text-gray-400">Awards</p>
+                            <p>{movie.Awards}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Released</p>
+                            <p>{movie.Released}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Language</p>
+                            <p>{movie.Language}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Country</p>
+                            <p>{movie.Country}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Box Office</p>
+                            <p>{movie.BoxOffice}</p>
+                        </div>
+                    </div>
+
+
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p className="text-green-600">▲ Metascore</p>
+                            <p className="text-xl text-green-600">{movie.Metascore}</p>
+                        </div>
+                        <div>
+                            <p className="text-gray-400">Production</p>
+                            <p>{movie.Production !== 'N/A' ? movie.Production : 'Not available'}</p>
+                        </div>
+                    </div>
+
+                    {movie.Website !== 'N/A' && (
+                        <div className="mb-4">
+                            <p className="text-gray-400">Website</p>
+                            <a
+                                href={movie.Website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 hover:underline"
+                            >
+                                {movie.Website}
+                            </a>
+                        </div>
+                    )}
+                    <div className="mb-4">
+                        <p className="text-gray-400 mb-2">Ratings Source</p>
+                        {movie.Ratings.map((rating, index) => (
+                            <p key={index}>
+                                <span className="font-semibold">{rating.Source}:</span> {rating.Value}
+                            </p>
+                        ))}
                     </div>
                 </div>
             )}
