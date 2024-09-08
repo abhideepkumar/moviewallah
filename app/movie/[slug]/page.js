@@ -5,22 +5,23 @@ import Image from 'next/image';
 import StarIcon from '@/public/icons/staricon';
 import Skeleton from './skeletonForID';
 import NoResultsIcon from '@/public/icons/NoResultsIcon';
-
+import Back from '@/components/back';
 const MovieDetails = ({ params }) => {
     const [movie, setMovie] = useState();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
+        // Fetch movie details when component mounts or slug changes
         async function fetchMovieDetails() {
             const response = await getMovieDetails(params.slug);
             setLoading(false);
             setMovie(response);
-            console.log('response', response);
-            setError(response.error);
+            setError(response.Error);
         }
         fetchMovieDetails();
     }, [params.slug]);
 
+    // Function to render genre tags
     const renderGenreTags = (genres) => {
         return genres?.split(', ').map((genre, index) => (
             <span key={index} className="px-3 py-1 mr-2 text-sm bg-gray-800 rounded-full">
@@ -31,9 +32,11 @@ const MovieDetails = ({ params }) => {
 
     return (
         <div className="bg-zinc-900 text-white min-h-screen">
+          <Back/>
             {loading ? (
                 <Skeleton />
             ) : error ? (
+                // Display error message if movie not found
                 <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
                     <NoResultsIcon />
                     <h2 className="text-xl font-semibold mb-2">No Results Found</h2>
@@ -45,8 +48,10 @@ const MovieDetails = ({ params }) => {
                         Back to Previous Page
                     </button>
                     <p className="text-gray-400 mt-5">Possible reason: {error}</p>
+                    <p className="text-gray-400 mt-2">Check if ID is correct or try another search</p>
                 </div>
             ) : (
+                // Display movie details
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex justify-between items-start m-4">
                         <div>

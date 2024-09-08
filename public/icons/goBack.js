@@ -1,4 +1,4 @@
-const NoResultsIcon = ({ className = "w-8 h-8 text-gray-400" }) => {
+const GoBack = ({ className = "w-8 h-8 text-primary" }) => {
   return (
     <svg
       className={className}
@@ -11,10 +11,10 @@ const NoResultsIcon = ({ className = "w-8 h-8 text-gray-400" }) => {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+        d="M7 16l-4-4m0 0l4-4m-4 4h18"
       />
     </svg>
   );
 };
 
-export default NoResultsIcon;
+export default GoBack

@@ -1,18 +1,30 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+
 const Searchbar = () => {
     const router = useRouter();
     const [query, setQuery] = useState('');
 
+    // Handle search submission
     const handleSearch = (event) => {
-        console.log('handle search');
-        if (query.startsWith('tt') === true) {
+        // Use regex to match movie ID pattern
+        const movieIdRegex = /^tt\d{7,8}$/;
+        
+        if (movieIdRegex.test(query)) {
             router.push(`/movie/${query}`);
         } else {
             router.push(`/${query}`);
         }
     };
+
+    // Handle Enter key press
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    };
+
     return (
         <div>
             <div className="flex justify-center items-center p-5">
@@ -24,6 +36,7 @@ const Searchbar = () => {
                     onChange={(e) => {
                         setQuery(e.target.value);
                     }}
+                    onKeyDown={handleKeyPress}
                 />
                 <button
                     className="bg-primary hover:bg-yellow-500 m-2 p-3 rounded-r ml-0 h-[50px]"

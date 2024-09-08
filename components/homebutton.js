@@ -3,7 +3,9 @@ import React from 'react';
 
 const HomeButton = () => {
     return (
+        // Fixed position home button with SVG icon
         <Link href="/" className="fixed z-50 bottom-5 right-5 bg-primary p-2 rounded-full hover:bg-yellow-500 transition-colors">
+            {/* SVG home icon */}
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
